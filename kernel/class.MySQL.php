@@ -1,4 +1,4 @@
-<?php /* Developed by Rafael Perrella */
+<?php
 
 class MySQL
 {
