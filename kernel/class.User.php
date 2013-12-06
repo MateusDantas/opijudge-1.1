@@ -272,6 +272,15 @@ class User
 
 		return $new_password;
 	}
+
+	/**
+	 * Copies useful data from $data to $this->data.
+	 */
+	public function copy_data_from_array(&$data)
+	{
+		$this->data = $data;
+		MySQL::clear_data($this->data, self::$mysql_columns, false);
+	}
 };
 
 ?>
