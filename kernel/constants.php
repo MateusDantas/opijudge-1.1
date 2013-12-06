@@ -20,6 +20,11 @@ define("INVALID_PASSWORD",6);
 define("REGISTER_SUCCESS",7);
 define("LOGIN_SUCCESS",8);
 define("ERROR_GENERATING_PASSWORD","");
+define("TYPE_USERNAME", 2);
+define("TYPE_ID", 3);
+define("TYPE_INVALID", 0);
+
+define("MIN_USER_LENGTH", 4);
 define("MAX_USER_LENGTH", 16);
 define("USER_REQUIRED_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 define("USER_OPTIONAL_ALPHABET", "0123456789_.");

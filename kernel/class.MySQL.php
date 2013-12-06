@@ -199,8 +199,15 @@ class MySQL
 	/**
 	 * Atualiza os dados de uma tabela.
 	 */
-	public static function update($table, &$data, $clauses="", $auto_free=true)
+	public static function update($table, &$data, $clauses=null, $auto_free=true)
 	{
+		if ($clauses === null)
+		{
+			$clauses = "";
+			if (key_exists("id", $data) && is_numeric($data["id"]))
+				$clauses = "WHERE `id`=" . $data["id"] . " LIMIT 1";
+		}
+
 		$update = "";
 		foreach ($data as $key => $value)
 			$update .= "`$key`=" . ($value === null ? "null," : "'" . mysql_real_escape_string($value) . "',");
