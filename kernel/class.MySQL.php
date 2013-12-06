@@ -223,6 +223,7 @@ class MySQL
 };
 
 $sql = new MySQL("127.0.0.1", "root", "", "pokemmo");
-if (!MySQL::is_connected($sql))
+if (!MySQL::is_connected())
 	die("Couldn't connect to sql server.");
+
 ?>
