@@ -1,0 +1,75 @@
+div.punit {
+	width: 810pt;
+}
+
+div.punit * {
+	height: 12pt;
+	padding-top: 2pt;
+	padding-left: 4pt;
+	font-family: Verdana;
+	font-size: 8pt;
+	border-collapse: collapse;
+}
+
+div.punit div.path_error {
+	width: 800pt;
+	background: #cc2020;
+	border: 1pt solid #701010;
+	color: #ffdddd;
+}
+
+div.punit div.path_success {
+	width: 800pt;
+	background: #19bb19;
+	border: 1pt solid #107010;
+	color: #ddffdd;
+}
+
+div.punit div.tab_error {
+	background: #cc2020;
+	border: 1pt solid #701010;
+	border-top: 0pt;
+	width: 31pt;
+	float: left;
+}
+
+div.punit div.tab_success {
+	background: #19bb19;
+	border: 1pt solid #107010;
+	border-top: 0pt;
+	width: 31pt;
+	float: left;
+}
+
+div.punit div.line_error, div.punit div.line_success {
+	padding-right: 4pt;
+	text-align: center;
+	background: #eee;
+	border-bottom: 1pt solid black;
+	width: 31pt;
+	float: left;
+}
+
+div.punit div.function_error, div.punit div.function_success {
+	background: #eee;
+	border-left: 1pt solid #808080;
+	border-bottom: 1pt solid black;
+	width: 220pt;
+	float: left;
+}
+
+
+div.punit div.message_error, div.punit div.message_success {
+	background: #eee;
+	border-left: 1pt solid #808080;
+	border-bottom: 1pt solid black;
+	border-right: 1pt solid black;
+	width: 500pt;
+	float: left;
+}
+
+div.punit div.right {
+}
+
+div.punit div.separator {
+}
