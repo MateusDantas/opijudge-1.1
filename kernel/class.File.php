@@ -62,13 +62,6 @@ class File
 		return $array_file_name[1];
 	}
 	
-	public function create()
-	{
-		$total_path = $this->get_total_path();
-		if (!fopen($total_path)) return FALSE;
-		return TRUE;
-	}
-	
 	public function write($file_content)
 	{
 		$total_path = $this->get_total_path();
@@ -105,7 +98,7 @@ class File
 	
 	public function read_from_file($file_total_path)
 	{
-		$handle = fopen($file_total_path);
+		$handle = fopen($file_total_path,'r');
 		$data = fread($handle, filesize($file_total_path));
 		
 		return $data;
