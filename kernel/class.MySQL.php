@@ -2,7 +2,6 @@
 
 class MySQL
 {
-	
 	private static $mysql_link = false;
 	private static $was_db_selected = false;
 	private static $last_query = false;
@@ -226,9 +225,5 @@ class MySQL
 $sql = new MySQL("127.0.0.1", "root", "", "opijudge");
 if (!MySQL::is_connected())
 	die("Couldn't connect to sql server.");
-<<<<<<< HEAD
-?>
-=======
 
 ?>
->>>>>>> 4ef7d21211ab90d8a311263f2c188da947dd3a57
