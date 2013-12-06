@@ -6,24 +6,11 @@ define("USER_COLUMNS", "id|username|password|salt|email|access_level");
 // Strings
 define("RANDOM_STRING_CHARSET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
 
-// Return status (errors)
+// General return status (errors)
 define("IMPLEMENTATION_ERROR", -8);
 define("MYSQL_SERVER_ERROR", -9);
 
-define("WRONG_PASSWORD", 1);
-define("WRONG_USERNAME", 2);
-define("USER_ALREADY_EXISTS",3);
-define("EMAIL_ALREADY_EXISTS",-3);
-define("INVALID_USER",4);
-define("INVALID_EMAIL",5);
-define("INVALID_PASSWORD",6);
-define("REGISTER_SUCCESS",7);
-define("LOGIN_SUCCESS",8);
-define("ERROR_GENERATING_PASSWORD","");
-define("TYPE_USERNAME", 2);
-define("TYPE_ID", 3);
-define("TYPE_INVALID", 0);
-
+// User configurations
 define("MIN_USER_LENGTH", 4);
 define("MAX_USER_LENGTH", 16);
 define("USER_REQUIRED_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -37,5 +24,20 @@ define("PASSWORD_SALT_LENGTH", 8);
 
 define("EMAIL_MAX_LENGTH", 48);
 
+// User return status
+define("WRONG_PASSWORD", 1);
+define("WRONG_USERNAME", 2);
+define("USER_ALREADY_EXISTS",3);
+define("INVALID_USER",4);
+define("INVALID_EMAIL",5);
+define("INVALID_PASSWORD",6);
+define("REGISTER_SUCCESS",7);
+define("LOGIN_SUCCESS",8);
+define("ERROR_GENERATING_PASSWORD","");
+
+define("TYPE_EMAIL", 1);
+define("TYPE_USERNAME", 2);
+define("TYPE_ID", 3);
+define("TYPE_INVALID", 0);
 
 ?>
