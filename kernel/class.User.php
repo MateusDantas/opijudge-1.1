@@ -107,13 +107,18 @@ class User
 	}
 
 	/**
-	 * @parameter $username_or_email_or_id A valid username, email or id.
-	 * @return TRUE, if the username, email or id exists in the user table, or FALSE, otherwise.
+	 * @parameter $list_of_username_or_email_or_id A list of valid usernames, emails or ids.
+	 * @return TRUE, if any username, email or id exists in the user table, or FALSE, otherwise.
 	 */
-	protected function exists($username_or_email_or_id)
+	protected function exists($list_of_username_or_email_or_id, $separator = " OR ")
 	{
-		
-		$where_clause = $this->get_where_clause($username_or_email_or_id);
+		if (is_string($list_of_username_or_email_or_id))
+			$list_of_username_or_email_or_id = array($list_of_username_or_email_or_id);
+
+		$where_clause = "";
+		for ($list_of_username_or_email_or_id as $username_or_email_or_id)
+			$where_clause .= $this->get_where_clause($username_or_email_or_id) . $separator;
+		$where_clause = substr($where_clause, 0, -strlen($separator));
 		return MySQL::fetch("SELECT COUNT(*) as amount FROM `user` WHERE $where_clause LIMIT 1")["amount"] >= 1;
 	}
 
@@ -188,6 +193,8 @@ class User
 		if (!$this->is_email_valid($this->data["email"])) return INVALID_EMAIL;
 
 		$this->hash_password();
+
+		// TODO[if required]: merge exists(username, email) in one query only
 		if ($this->exists($this->data["username"])) return USER_ALREADY_EXISTS;
 		if ($this->exists($this->data["email"])) return EMAIL_ALREADY_EXISTS;
 		if (!MySQL::insert("user", $this->data)) return MYSQL_SERVER_ERROR;
@@ -200,21 +207,20 @@ class User
 	 * @param password User's password
 	 * @return TRUE if login was successful or FALSE otherwise
 	 */
-	 public function login($username_or_email, $password)
-	 {
+	public function login($username_or_email, $password)
+	{
 		if (!$this->exists($username_or_email)) return false;
 
-		if ($this->is_email_valid($username_or_email))
-			$query_find_user = MySQL::fetch("SELECT * FROM user WHERE email='$username_or_email'");
-		else if ($this->is_username_valid($username_or_email))
-			$query_find_user = MySQL::fetch("SELECT * FROM user WHERE username='$username_or_email'");
-		else
-			return FALSE;
+		switch ($this->get_type(username_or_email))
+		{
+		case TYPE_USERNAME:
+		case TYPE_EMAIL:
+			$query_find_user = MySQL::fetch("SELECT * FROM `user` WHERE `email`='" . $this->get_where_clause($username_or_email) . "'");
+			$hashed_password = $this->get_hashed_password($password, $query_find_user["salt"]);
 
-		$hashed_password = $this->get_hashed_password($password, $query_find_user["salt"]);
-
-		if ($query_find_user["password"] !== $hashed_password) return FALSE;
-		return TRUE;
+			return $query_find_user["password"] === $hashed_password;
+		}
+		return false;
 	}
 
 	/**
@@ -224,19 +230,9 @@ class User
 	 */
 	public function get($username_or_id)
 	{
-		if (!$this->exists($username_or_id)) return false;
-
-		if ($this->is_username_valid($username_or_id))
-			$query_find_user = MySQL::fetch("SELECT * FROM user WHERE username='$username_or_id'");
-		else
-			$query_find_user = MySQL::fetch("SELECT * FROM user WHERE id=$username_or_id");
-
-		$this->data["username"] = $query_find_user["username"];
-		$this->data["email"] = $query_find_user["email"];
-		$this->data["id"] = $query_find_user["id"];
-		$this->data["password"] = $query_find_user["password"];
-
-		return true;
+		if ($this->is_email_valid($username_or_id)) return false;
+		$this->data = MySQL::fetch("SELECT * FROM `user` WHERE " . $this->get_where_clause($username_or_id) . " LIMIT 1");
+		return $this->data != false;
 	}
 
 	/**
@@ -245,16 +241,11 @@ class User
 	 */
 	public function update()
 	{
-		if (!$this->is_username_invalid($this->data["username"])) return false;
-		if (!$this->is_password_invalid($this->data["password"])) return false;
+		if (!$this->is_username_valid($this->data["username"])) return false;
+		if (!$this->is_password_valid($this->data["password"])) return false;
 		if (!$this->is_email_valid($this->data["email"])) return false;
 
-		if ($this->exists($this->data["username"])) return false;
-		if ($this->exists($this->data["email"])) return false;
-
-		if (!MySQL::update("user", $this->data)) return false;
-
-		return true;
+		return MySQL::update("user", $this->data) !== false;
 	}
 
 	/**
@@ -264,17 +255,8 @@ class User
 	 */
 	public function remove($username_or_email_or_id)
 	{
-		if (!$this->exists($username_or_email_or_id)) return FALSE;
-
-		if ($this->is_username_valid($username_or_email_or_id))
-			$query_find_user = MySQL::fetch("SELECT * FROM user where username='$username_or_email_or_id'");
-		else if ($this->is_email_valid($username_or_email_or_id))
-			$query_find_user = MySQL::fetch("SELECT * FROM user where email='$username_or_email_or_id'");
-		else
-			$query_find_user = MySQL::fetch("SELECT * FROM user where id=$username_or_email_or_id");
-
-		$id_query = $query_find_user["id"];
-		return MySQL::delete("user", "WHERE id=$id_query") !== false;
+		if (!MySQL::delete("user", "WHERE " . $this->get_where_clause($username_or_email_or_id))) return false;
+		return MySQL::affected_rows() >= 1;
 	}
 
 	/**
