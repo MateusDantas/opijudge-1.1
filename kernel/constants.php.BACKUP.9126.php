@@ -17,9 +17,14 @@ define("EMAIL_ALREADY_EXISTS",-3);
 define("INVALID_USER",4);
 define("INVALID_EMAIL",5);
 define("INVALID_PASSWORD",6);
+<<<<<<< HEAD
 define("REGISTER_SUCCESS",7);
 define("LOGIN_SUCCESS",8);
 define("ERROR_GENERATING_PASSWORD","");
+=======
+
+// Users
+define("MIN_USER_LENGTH", 4);
 define("MAX_USER_LENGTH", 16);
 define("USER_REQUIRED_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 define("USER_OPTIONAL_ALPHABET", "0123456789_.");
@@ -33,4 +38,5 @@ define("PASSWORD_SALT_LENGTH", 8);
 define("EMAIL_MAX_LENGTH", 48);
 
 
+>>>>>>> f917c6250aa18eadc9dc05f92594470a86588cf9
 ?>
