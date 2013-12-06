@@ -21,7 +21,9 @@ class File
 	 */ 
 	public function get_total_path()
 	{
-		return $this->path . $this->file_name . $this->extension;
+		if ($this->extension == "")
+			return $this->path . $this->file_name . $this->extension;
+		return $this->path . $this->file_name . "." . $this->extension;
 	}
 	
 	/**
@@ -29,7 +31,7 @@ class File
 	 */
 	public function get_path()
 	{
-		return $path;
+		return $this->path;
 	}
 	
 	/**
@@ -37,7 +39,7 @@ class File
 	 */
 	public function get_file_name()
 	{
-		return $file_name;
+		return $this->file_name;
 	}
 	
 	/**
@@ -45,7 +47,7 @@ class File
 	 */
 	public function get_extension()
 	{
-		return $extension;
+		return $this->extension;
 	}
 	
 	/**
@@ -71,7 +73,8 @@ class File
 		$array_path = explode("/",$total_path);
 		if (sizeof($array_path) == 0) return "";
 		$file_name_ext = $array_path[sizeof($array_path) - 1];
-		return $file_name_ext;
+		$file_name_w_ext = explode(".", $file_name_ext);
+		return $file_name_w_ext[0];
 	}
 	
 	/**
@@ -80,14 +83,10 @@ class File
 	 */
 	public function get_extension_from_str($total_path)
 	{
-		$file_total_name = $this->get_file_name_from_str($total_path);
-		if ($file_total_name === "") return $file_total_name;
+		$file_total_name = explode(".", $total_path);
+		if (sizeof($file_total_name) <= 1) return "";
 		
-		$array_file_name = explode(".", $file_total_name);
-		
-		if (sizeof($array_file_name) <= 1) return "";
-		
-		return $array_file_name[1];
+		return $file_total_name[sizeof($file_total_name) - 1];
 	}
 	
 	/**
