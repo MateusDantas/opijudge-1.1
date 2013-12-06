@@ -214,10 +214,10 @@ class MySQL
 	/**
 	 * Elimina as chaves inúteis de um array de dados.
 	 */
-	public static function clear_data(&$data, $columns)
+	public static function clear_data(&$data, $columns, $remove_id=true)
 	{
 		foreach ($data as $key => $value)
-			if (!array_key_exists($key, $columns))
+			if (!array_key_exists($key, $columns) || ($key == "id" && $remove_id))
 				unset($data[$key]);
 	}
 };
