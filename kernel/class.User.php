@@ -15,7 +15,11 @@ class User
 	public function __construct()
 	{
 		if (self::$mysql_columns === null)
-			self::$mysql_columns = explode("|", USER_COLUMNS);
+		{
+			$keys = explode("|", USER_COLUMNS);
+			foreach ($keys as $key)
+				self::$mysql_columns[$key] = true;
+		}
 	}
 
 	/**
@@ -25,9 +29,9 @@ class User
 	 */
 	private function get_type($username_or_email_or_id)
 	{
-		if ($this->is_valid_email($username_or_email_or_id))
+		if ($this->is_email_valid($username_or_email_or_id))
 			return TYPE_EMAIL;
-		if ($this->is_valid_username($username_or_email_or_id))
+		if ($this->is_username_valid($username_or_email_or_id))
 			return TYPE_USERNAME;
 		if (is_numeric($username_or_email_or_id))
 			return TYPE_ID;
@@ -45,7 +49,7 @@ class User
 	 */
 	private function get_where_clause($username_or_email_or_id)
 	{
-		switch($this->get_type($username_or_email_or_password))
+		switch($this->get_type($username_or_email_or_id))
 		{
 		case TYPE_EMAIL:
 			return "`email`='" . mysql_real_escape_string($username_or_email_or_id) . "'";
@@ -63,7 +67,6 @@ class User
 	 */
 	protected function is_password_valid($password)
 	{
-		/*
 		if (!between(strlen($password), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH))
 			return false;
 
@@ -71,7 +74,7 @@ class User
 		for ($i = strlen($password)-1; $i >= 0; $i--)
 			if (!key_exists($password[$i], $is_valid))
 				return false;
-		*/
+
 		return true;
 	}
 
@@ -156,7 +159,7 @@ class User
 	 */
 	protected function hash_password($force=false)
 	{
-		if (!$force && !key_exists($this->data["salt"]))
+		if ($force || !key_exists("salt", $this->data))
 		{
 			$this->data["salt"] = $this->get_random_salt();
 			$this->data["password"] = $this->get_hashed_password($this->data["password"], $this->data["salt"]);
@@ -174,8 +177,12 @@ class User
 	{
 		if ($name == "password")
 		{
-			$this->data["password"] = $value;
-			$this->hash_password(true);
+			$this->data["password"] = null;
+			if ($this->is_password_valid($value))
+			{
+				$this->data["password"] = $value;
+				$this->hash_password(true);
+			}
 		}
 		else if (is_string($name) && key_exists($name, self::$mysql_columns))
 			$this->data[$name] = $value;
@@ -189,7 +196,8 @@ class User
 	 */
 	public function register()
 	{
-		if (!$this->is_password_valid($this->data["password"])) return INVALID_PASSWORD;
+		//if (!$this->is_password_valid($this->data["password"])) return INVALID_PASSWORD;
+		if ($this->password === null) return INVALID_PASSWORD;
 		if (!$this->is_username_valid($this->data["username"])) return INVALID_USER;
 		if (!$this->is_email_valid($this->data["email"])) return INVALID_EMAIL;
 
@@ -243,7 +251,8 @@ class User
 	public function update()
 	{
 		if (!$this->is_username_valid($this->data["username"])) return false;
-		if (!$this->is_password_valid($this->data["password"])) return false;
+		//if (!$this->is_password_valid($this->data["password"])) return false;
+		if ($this->data["password"] === null) return false;
 		if (!$this->is_email_valid($this->data["email"])) return false;
 
 		return MySQL::update("user", $this->data) !== false;
@@ -277,7 +286,7 @@ class User
 	/**
 	 * Copies useful data from $data to $this->data.
 	 */
-	public function copy_data_from_array(&$data)
+	public function copy_data_from_array($data)
 	{
 		$this->data = $data;
 		MySQL::clear_data($this->data, self::$mysql_columns, false);
