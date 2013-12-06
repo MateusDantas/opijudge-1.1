@@ -18,6 +18,11 @@ define("INVALID_EMAIL",5);
 define("INVALID_PASSWORD",6);
 
 // Users
+define("TYPE_EMAIL", 1);
+define("TYPE_USERNAME", 2);
+define("TYPE_ID", 3);
+define("TYPE_INVALID", 0);
+
 define("MIN_USER_LENGTH", 4);
 define("MAX_USER_LENGTH", 16);
 define("USER_REQUIRED_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
