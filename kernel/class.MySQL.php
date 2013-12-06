@@ -222,7 +222,7 @@ class MySQL
 	}
 };
 
-$sql = new MySQL("127.0.0.1", "root", "", "pokemmo");
+$sql = new MySQL("127.0.0.1", "root", "", "opijudge");
 if (!MySQL::is_connected())
 	die("Couldn't connect to sql server.");
 
