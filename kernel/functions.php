@@ -33,12 +33,12 @@ function date_now()
 	return date("Y-m-d H:i:s");
 }
 
-function difference_in_days($date1, $date2)
+/*function difference_in_days($date1, $date2)
 {
 	if (($int = (new DateTime($date1))->diff(new DateTime($date2))) === false)
 		return 0;
 	return $int->days;
-}
+}*/
 
 /*
  * Sets and intervals functions
