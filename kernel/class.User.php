@@ -63,6 +63,7 @@ class User
 	 */
 	protected function is_password_valid($password)
 	{
+		/*
 		if (!between(strlen($password), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH))
 			return false;
 
@@ -70,7 +71,7 @@ class User
 		for ($i = strlen($password)-1; $i >= 0; $i--)
 			if (!key_exists($password[$i], $is_valid))
 				return false;
-
+		*/
 		return true;
 	}
 
