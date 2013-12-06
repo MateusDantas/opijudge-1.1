@@ -117,7 +117,7 @@ class User
 			$list_of_username_or_email_or_id = array($list_of_username_or_email_or_id);
 
 		$where_clause = "";
-		for ($list_of_username_or_email_or_id as $username_or_email_or_id)
+		foreach ($list_of_username_or_email_or_id as $username_or_email_or_id)
 			$where_clause .= $this->get_where_clause($username_or_email_or_id) . $separator;
 		$where_clause = substr($where_clause, 0, -strlen($separator));
 		return MySQL::fetch("SELECT COUNT(*) as amount FROM `user` WHERE $where_clause LIMIT 1")["amount"] >= 1;
