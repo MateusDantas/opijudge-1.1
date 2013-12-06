@@ -2,6 +2,7 @@
 
 class MySQL
 {
+	
 	private static $mysql_link = false;
 	private static $was_db_selected = false;
 	private static $last_query = false;
