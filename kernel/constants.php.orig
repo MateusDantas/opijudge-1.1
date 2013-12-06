@@ -24,7 +24,13 @@ define("ERROR_GENERATING_PASSWORD","");
 =======
 
 // Users
+define("TYPE_EMAIL", 1);
+define("TYPE_USERNAME", 2);
+define("TYPE_ID", 3);
+define("TYPE_INVALID", 0);
+
 define("MIN_USER_LENGTH", 4);
+>>>>>>> 8ca9c24048a7b1f151090aa275fe7c802724aa08
 define("MAX_USER_LENGTH", 16);
 define("USER_REQUIRED_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 define("USER_OPTIONAL_ALPHABET", "0123456789_.");
@@ -38,5 +44,4 @@ define("PASSWORD_SALT_LENGTH", 8);
 define("EMAIL_MAX_LENGTH", 48);
 
 
->>>>>>> f917c6250aa18eadc9dc05f92594470a86588cf9
 ?>
