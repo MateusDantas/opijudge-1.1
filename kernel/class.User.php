@@ -274,7 +274,7 @@ class User
 	}
 
 	/**
-	 * Copies data from array to $this->data.
+	 * Copies data from $data to $this->data.
 	 */
 	public function copy_data_from_array(&$data)
 	{
