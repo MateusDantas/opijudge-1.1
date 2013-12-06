@@ -62,17 +62,10 @@ class File
 		return $array_file_name[1];
 	}
 	
-	public function create()
-	{
-		$total_path = $this->get_total_path();
-		if (!fopen($total_path)) return FALSE;
-		return TRUE;
-	}
-	
 	public function write($file_content)
 	{
 		$total_path = $this->get_total_path();
-		$handle = fopen($total_path, 'w');
+		$handle = fopen($total_path, 'w+b');
 		if (!$handle) return FALSE;
 		
 		$data = $file_content;
@@ -84,7 +77,7 @@ class File
 	
 	public function write_to_file($file_total_path, $file_content)
 	{
-		$handle = fopen($file_total_path,'w');
+		$handle = fopen($file_total_path,'w+b');
 		if (!$handle) return FALSE;
 		
 		$data = $file_content;
@@ -105,7 +98,7 @@ class File
 	
 	public function read_from_file($file_total_path)
 	{
-		$handle = fopen($file_total_path);
+		$handle = fopen($file_total_path,'r');
 		$data = fread($handle, filesize($file_total_path));
 		
 		return $data;
