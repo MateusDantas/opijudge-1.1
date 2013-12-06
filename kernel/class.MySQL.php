@@ -1,4 +1,4 @@
-<?php /* Developed by Rafael Perrella */
+<?php
 
 class MySQL
 {
@@ -215,15 +215,20 @@ class MySQL
 	/**
 	 * Elimina as chaves inúteis de um array de dados.
 	 */
-	public static function clear_data(&$data, $columns)
+	public static function clear_data(&$data, $columns, $remove_id=true)
 	{
 		foreach ($data as $key => $value)
-			if (!array_key_exists($key, $columns))
+			if (!array_key_exists($key, $columns) || ($key == "id" && $remove_id))
 				unset($data[$key]);
 	}
 };
 
 $sql = new MySQL("127.0.0.1", "root", "", "pokemmo");
-if (!MySQL::is_connected($sql))
+if (!MySQL::is_connected())
 	die("Couldn't connect to sql server.");
+<<<<<<< HEAD
 ?>
+=======
+
+?>
+>>>>>>> 4ef7d21211ab90d8a311263f2c188da947dd3a57
