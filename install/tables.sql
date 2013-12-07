@@ -35,5 +35,6 @@ CREATE TABLE IF NOT EXISTS `submission`
 	`date` DATETIME NOT NULL,
 	INDEX(problem_id,best_user_lang_ac,points,time,date),
 	INDEX(problem_id,best_user_lang_ac,language,points,time,date),
-	INDEX(user_id,problem_id)
+	INDEX(user_id,problem_id),
+	INDEX(user_id,problem_id,language)
 ) ENGINE=MyISAM;
