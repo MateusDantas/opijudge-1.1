@@ -301,7 +301,7 @@ class User
 	/**
 	 * Copies useful data from $data to $this->data.
 	 */
-	public function copy_data_from_array($data)
+	private function copy_data_from_array($data)
 	{
 		$this->data = $data;
 		MySQL::clear_data($this->data, self::$mysql_columns, false);
