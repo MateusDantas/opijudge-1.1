@@ -13,7 +13,7 @@ class Problem
 	/**
 	 * Constructor: builds mysql columns for Problem class.
 	 */
-	public function __construct($name, $type=FULL_SCORE_PROBLEM_TYPE)
+	public function __construct($name=null, $user_id=null, $type=FULL_SCORE_PROBLEM_TYPE)
 	{
 		if (self::$mysql_columns === null)
 		{
@@ -21,8 +21,9 @@ class Problem
 			foreach ($keys as $key)
 				self::$mysql_columns[$key] = true;
 		}
-		$this->data["name"] = $name;
-		$this->data["type"] = $type;
+		$this->name = $name;
+		$this->user_id = $user_id;
+		$this->type = $type;
 	}
 
 	public function __get($name)
@@ -37,7 +38,7 @@ class Problem
 		if ($name == "all")
 			$this->copy_data_from_array($value);
 		else if (is_string($name) && key_exists($name, self::$mysql_columns))
-			$this->data[$name] = $value;
+			$this->data[$name] = is_string($value) ? trim($value) : $value;
 	}
 
 	public function __invoke($data)
@@ -64,9 +65,7 @@ class Problem
 	 */
 	private function is_name_valid($name)
 	{
-		if (!between($name, PROBLEM_NAME_MIN_LENGTH, PROBLEM_NAME_MAX_LENGTH))
-			return false;
-		return true;
+		return between(strlen($name), PROBLEM_NAME_MIN_LENGTH, PROBLEM_NAME_MAX_LENGTH);
 	}
 
 	/**
@@ -76,12 +75,15 @@ class Problem
 	 */
 	public function add()
 	{
-		if (!$this->is_name_valid($this->name)) {
+		if ($this->id !== null || $this->user_id === null)
+			return IMPLEMENTATION_ERROR;
+		if (!$this->is_name_valid($this->name))
 			return INVALID_PROBLEM_NAME;
-		}
-		if (!MySQL::insert("problem", $this->data)) {
+		if ($this->type != FULL_SCORE_PROBLEM_TYPE && $this->type != BY_POINTS_PROBLEM_TYPE)
+			return IMPLEMENTATION_ERROR;
+		if (!MySQL::insert("problem", $this->data))
 			return MYSQL_SERVER_ERROR;
-		}
+		$this->id = MySQL::insert_id();
 		return ADD_PROBLEM_SUCCESS;
 	}
 	
@@ -101,11 +103,15 @@ class Problem
 	 */
 	public function update()
 	{
-		$now_id = (int)$this->id;
-		if (!MySQL::update("problem", $this->data,"WHERE id=$now_id"))
-			return FALSE;
-			
-		return TRUE;
+		if (!is_numeric($this->id) || $this->id === null || $this->user_id === null)
+			return IMPLEMENTATION_ERROR;
+		if (!$this->is_name_valid($this->name))
+			return INVALID_PROBLEM_NAME;
+		if ($this->type != FULL_SCORE_PROBLEM_TYPE && $this->type != BY_POINTS_PROBLEM_TYPE)
+			return IMPLEMENTATION_ERROR;
+		if (!MySQL::update("problem", $this->data))
+			return MYSQL_SERVER_ERROR;
+		return UPDATE_PROBLEM_SUCCESS;
 	}
 	
 	/**
@@ -117,26 +123,39 @@ class Problem
 		if ($id === null && $this->id !== null)
 			$id = (int)$this->id;
 
-		if (!MySQL::delete("problem","WHERE id=" . ((int)$id)))
+		if (!MySQL::delete("problem", "WHERE `id`=" . ((int)$id) . " LIMIT 1"))
 			return false;
-		return true;
+		return MySQL::affected_rows() >= 1;
 	}
 	
 	/**
-	 * Get the list of submissions of some problem
-	 * @param id id of the problem
-	 * @param limit Limit of results
-	 * @return Array of submissions of some problem
+	 * Get the list of submissions of "this" problem
+	 * @param $page Starting page (considering each page has $limit entries)
+	 * @param $limit Amount of values to get.
+	 * @param $language For which language we want to get submissions (LANG_ANY for any).
+	 * @return Array of submissions of this problem.
 	 */
-	public function get_submissions($id, $limit=NO_LIMIT_PROBLEM)
+	public function get_submissions($page=0, $limit=20, $language=LANG_ANY)
 	{
-		if ($limit === NO_LIMIT_PROBLEM){
-			$array_submissions = Submission::get_list("WHERE id=$id");
-		} else {
-			$array_submissions = Submission::get_list("WHERE id=$id LIMIT=$limit");
-		}
-		
-		return $array_submissions;
+		$where_clause = "WHERE `problem_id`=" . ((int)$this->id);
+		$where_clause .= $language != LANG_ANY ? " AND `language`=" . ((int)$language) : "";
+		$limit_clause = "LIMIT " . ($page*$limit) . ", $limit";
+		return Submission::get_list("$where_clause $limit_clause");
+	}
+
+	/**
+	 * Get the rank of submissions of "this" problem
+	 * @param $page Starting page (considering each page has $limit entries)
+	 * @param $limit Amount of values to get.
+	 * @param $language For which language we want to get submissions (LANG_ANY for any).
+	 * @return Array of submissions of this problem.
+	 */
+	public function get_rank($page=0, $limit=20, $language=LANG_ANY)
+	{
+		$where_clause = "WHERE `problem_id`=" . ((int)$this->id) . " AND `best_user_lang_ac`=1";
+		$where_clause .= $language != LANG_ANY ? " AND `language`=" . ((int)$language) : "";
+		$limit_clause = "LIMIT " . ($page*$limit) . ", $limit";
+		return Submission::get_list("$where_clause ORDER BY `points` DESC, `time` ASC $limit_clause");
 	}
 };
 

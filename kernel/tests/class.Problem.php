@@ -12,6 +12,7 @@ class ProblemTest
 	{
 		MySQL::query("DELETE FROM `problem`");
 		MySQL::query("DELETE FROM `user`");
+		MySQL::query("DELETE FROM `submission`");
 
 		$user = new User();
 		$user(array("username" => "mateusgay", "email" => "mateusgay@gmail.com"));
@@ -55,8 +56,15 @@ class ProblemTest
 		if (!assertEquals($submission->add(), ADD_SUBMISSION_SUCCESS)) return;
 		$submissions = $problem->get_submissions();
 		if (!assertEquals(sizeof($submissions), 1)) return;
-		$submissions = $problem->get_submissions(100000);
+		$submissions = $problem->get_submissions(0, 100000);
 		if (!assertEquals(sizeof($submissions), 1)) return;
+
+		// TODO: test more options
+	}
+
+	function get_rank()
+	{
+		// TODO
 	}
 
 	function update()
@@ -65,16 +73,16 @@ class ProblemTest
 		if (!assertTrue($problem->get($this->myid))) return;
 
 		$problem->name = generate_random_string(PROBLEM_NAME_MAX_LENGTH+1, PROBLEM_NAME_MAX_LENGTH+1);
-		if (!assertFalse($problem->update())) return;
+		if (!assertEquals($problem->update(), INVALID_PROBLEM_NAME)) return;
 
 		$problem->name = generate_random_string(PROBLEM_NAME_MAX_LENGTH, PROBLEM_NAME_MAX_LENGTH);
-		if (!assertTrue($problem->update())) return;
+		if (!assertEquals($problem->update(), UPDATE_PROBLEM_SUCCESS)) return;
 
 		$problem->name = "this is my name";
 		$problem->id = "0 or 1=1";
-		if (!assertFalse($problem->update())) return; // simpliest sql injection ever
+		if (!assertEquals($problem->update(), IMPLEMENTATION_ERROR)) return; // simpliest sql injection ever
 		$problem->id = "0' or '1'='1";
-		if (!assertFalse($problem->update())) return;
+		if (!assertEquals($problem->update(), IMPLEMENTATION_ERROR)) return;
 	}
 
 	function remove()
