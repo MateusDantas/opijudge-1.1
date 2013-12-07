@@ -12,6 +12,17 @@ define("RANDOM_STRING_CHARSET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU
 define("IMPLEMENTATION_ERROR", -8);
 define("MYSQL_SERVER_ERROR", -9);
 
+// Submissions
+define("STATUS_MIN_LENGTH", 2);
+define("STATUS_MAX_LENGTH", 64);
+
+define("UNKNOWN_LANGUAGE", 1);
+define("INVALID_SUBMISSION_STATUS", 2);
+define("INVALID_SUBMISSION_POINTS", 3);
+define("ADD_SUBMISSION_SUCCESS", 4);
+define("SUBMISSION_DATA_NO_ERROR", 0);
+define("UPDATE_SUBMISSION_SUCCESS", 4);
+
 // Problems
 define("PROBLEM_NAME_MIN_LENGTH", 4);
 define("PROBLEM_NAME_MAX_LENGTH", 48);
@@ -54,5 +65,24 @@ define("TYPE_EMAIL", 1);
 define("TYPE_USERNAME", 2);
 define("TYPE_ID", 3);
 define("INVALID_TYPE", 0);
+
+
+// Language constants
+define("LANG_CPP", 1);
+define("LANG_C", 2);
+define("LANG_PYTHON", 3);
+define("LANG_JAVA", 4);
+function is_language_known($language) // why not a function here?
+{
+	switch($language)
+	{
+	case LANG_CPP:
+	case LANG_C:
+	case LANG_PYTHON:
+	case LANG_JAVA:
+		return true;
+	}
+	return false;
+}
 
 ?>
