@@ -112,12 +112,14 @@ class Problem
 	 * Remove some problem
 	 * @return TRUE if successfull or FALSE otherwise
 	 */
-	public function remove($id)
+	public function remove($id=null)
 	{
+		if ($id === null && $this->id !== null)
+			$id = (int)$this->id;
+
 		if (!MySQL::delete("problem","WHERE id=" . ((int)$id)))
-			return FALSE;
-			
-		return TRUE;
+			return false;
+		return true;
 	}
 	
 	/**
