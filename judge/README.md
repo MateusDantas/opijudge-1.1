@@ -1,12 +1,13 @@
-OPI Online Judge - 1.1
+OPI Online Judge - 1.1 
 
 INTRODUCTION
 
-First go the Sandbox folder, read the README and make sure to follow every step
-until doing this one! After you've installed sandbox, execute install-folders.sh
-by executing the following command on the terminal:
+First execute this command
 
 sudo bash install-folders.sh
+
+Then go to the sandbox folder and follow the instructions in the README
+and install the sandbox. 
 
 After this execute the following command inside this folder
 

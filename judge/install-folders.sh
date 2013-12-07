@@ -1,4 +1,7 @@
 #!/bin/bash
+
+git clone "https://github.com/openjudge/sandbox.git"
+
 mkdir "/var/codes-opijudge"
 chown -R www-data:www-data "/var/codes-opijudge"
 chmod 777 "/var/codes-opijudge"
