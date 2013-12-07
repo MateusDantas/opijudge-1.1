@@ -205,6 +205,7 @@ class User
 	 */
 	public function register()
 	{
+		if ($this->id !== null) return IMPLEMENTATION_ERROR;
 		if ($this->password === null) return INVALID_PASSWORD;
 		if (!$this->is_username_valid($this->username)) return INVALID_USER;
 		if (!$this->is_email_valid($this->email)) return INVALID_EMAIL;
