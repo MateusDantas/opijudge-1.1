@@ -108,6 +108,7 @@ class UserTest
 		$user->get("rafaelclp");
 		if (!assertTrue($user->remove())) return;
 		if (!assertFalse($user->remove())) return;
+		$user->id = null;
 		if (!assertEquals($user->register(), REGISTER_SUCCESS)) return;
 		$user = new User();
 		if (!assertTrue($user->remove("rafaelclp"))) return;
