@@ -274,8 +274,13 @@ class User
 	 * @param username_or_email_or_id User's username, email or id
 	 * @return TRUE if successfull or FALSE otherwise
 	 */
-	public function remove($username_or_email_or_id)
+	public function remove($username_or_email_or_id=null)
 	{
+		if ($this->get_type($username_or_email_or_id) === INVALID_TYPE)
+		{
+			if ($username_or_email_or_id === null && $this->id !== null)
+				$username_or_email_or_id = $this->id;
+		}
 		if (!MySQL::delete("user", "WHERE " . $this->get_where_clause($username_or_email_or_id))) return false;
 		return MySQL::affected_rows() >= 1;
 	}

@@ -94,10 +94,19 @@ class UserTest
 
 	function remove()
 	{
+		$user = new User();
+		$user->get("rafaelclp");
+		if (!assertTrue($user->remove())) return;
+		if (!assertFalse($user->remove())) return;
+		if (!assertEquals($user->register(), REGISTER_SUCCESS)) return;
+		$user = new User();
+		if (!assertTrue($user->remove("rafaelclp"))) return;
+		if (!assertFalse($user->remove("rafaelclp"))) return;
 	}
 
 	function recover_password()
 	{
+		
 	}
 };
 
