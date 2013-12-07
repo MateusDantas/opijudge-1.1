@@ -84,7 +84,7 @@ class User
 	 */
 	protected function is_username_valid($username)
 	{
-		if (!between(strlen($username), MIN_USER_LENGTH, MAX_USER_LENGTH))
+		if (!between(strlen($username), USER_MIN_LENGTH, USER_MAX_LENGTH))
 			return false;
 
 		generate_alphabet_map($is_required, USER_REQUIRED_ALPHABET);
@@ -229,14 +229,16 @@ class User
 	{
 		if (!$this->exists($username_or_email)) return false;
 
-		switch ($this->get_type(username_or_email))
+		switch ($this->get_type($username_or_email))
 		{
 		case TYPE_USERNAME:
 		case TYPE_EMAIL:
-			$query_find_user = MySQL::fetch("SELECT * FROM `user` WHERE `email`='" . $this->get_where_clause($username_or_email) . "'");
-			$hashed_password = $this->get_hashed_password($password, $query_find_user["salt"]);
+			$user_data = MySQL::fetch("SELECT * FROM `user` WHERE " . $this->get_where_clause($username_or_email));
+			$hashed_password = $this->get_hashed_password($password, $user_data["salt"]);
 
-			return $query_find_user["password"] === $hashed_password;
+			if ($user_data["password"] === $hashed_password)
+				$this->data = $user_data;
+			return $user_data["password"] === $hashed_password;
 		}
 		return false;
 	}
@@ -259,8 +261,9 @@ class User
 	 */
 	public function update()
 	{
-		if (!$this->is_username_valid($this->username)) return false;
+		if ($this->id === null) return false;
 		if ($this->password === null) return false;
+		if (!$this->is_username_valid($this->username)) return false;
 		if (!$this->is_email_valid($this->email)) return false;
 
 		return MySQL::update("user", $this->data) !== false;
