@@ -1,4 +1,4 @@
-OPI Online Judge - 1.1
+OPI Online Judge - 1.1 
 
 INTRODUCTION
 
