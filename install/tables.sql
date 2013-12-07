@@ -28,8 +28,11 @@ CREATE TABLE IF NOT EXISTS `submission`
 	`language` TINYINT(2) NOT NULL,
 	`status` VARCHAR(64) NOT NULL,
 	`points` SMALLINT(3) NOT NULL,
-	`visibility` TINYINT(1) NOT NULL DEFAULT 0,
-	INDEX(problem_id,visibility,points,language),
-	INDEX(user_id,problem_id,points)
+	`time` INT(9) NOT NULL,
+	`memory` INT(9) NOT NULL,
+	`best_user_lang_ac` TINYINT(1) NOT NULL DEFAULT 0,
+	`date` DATETIME NOT NULL,
+	INDEX(problem_id,best_user_lang_ac,points,time,date),
+	INDEX(problem_id,best_user_lang_ac,language,points,time,date),
+	INDEX(user_id,problem_id)
 ) ENGINE=MyISAM;
-
