@@ -12,7 +12,17 @@ define("RANDOM_STRING_CHARSET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU
 define("IMPLEMENTATION_ERROR", -8);
 define("MYSQL_SERVER_ERROR", -9);
 
+
+// Problems
+define("BY_POINTS_PROBLEM_TYPE",1);
+define("FULL_SCORE_PROBLEM_TYPE",2);
+define("ADD_PROBLEM_SUCCESS",3);
+define("INVALID_PROBLEM_NAME",4);
+define("NO_LIMIT_PROBLEM",5);
+//
+
 // User configurations
+
 define("USER_MIN_LENGTH", 4);
 define("USER_MAX_LENGTH", 16);
 define("USER_REQUIRED_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");

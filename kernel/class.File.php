@@ -89,6 +89,41 @@ class File
 		return $file_total_name[sizeof($file_total_name) - 1];
 	}
 	
+	
+	/**
+	 * Remove the actual file
+	 * @return TRUE if successfull or FALSE otherwise
+	 */
+	public function remove_file()
+	{
+		$total_path = $this->get_total_path();
+		if (file_exists($total_path)) {
+			
+			unlink($total_path);
+		} else {
+			return FALSE;
+		}
+		
+		return TRUE;
+	}
+	
+	/**
+	 * Remove any file from some path
+	 * @return TRUE if successfull or FALSE otherwise
+	 */
+	public function remove_file_from_path($file_path)
+	{
+		
+		if (file_exists($file_path)) {
+			
+			unlink($file_path);
+		} else {
+			return FALSE;
+		}
+		
+		return TRUE;
+	}
+	
 	/**
 	 * @param file_content File content
 	 * @return TRUE if file was successfuly written or FALSE otherwise
