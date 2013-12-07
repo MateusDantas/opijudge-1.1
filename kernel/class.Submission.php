@@ -50,9 +50,12 @@ class Submission
 		{
 			if (isset($best_id))
 				MySQL::query("UPDATE `submission` SET `best_user_lang_ac`=0 WHERE `id`=" . ((int)$best_id));
-			MySQL::query("UPDATE `submission` SET `best_user_lang_ac`=1 WHERE `id`=" . ((int)$subs[0][2]));
-			if ($this->id == $subs[0][2])
-				$this->best_user_lang_ac = 1;
+			if ($subs[0][0] != 0)
+			{
+				MySQL::query("UPDATE `submission` SET `best_user_lang_ac`=1 WHERE `id`=" . ((int)$subs[0][2]));
+				if ($this->id == $subs[0][2])
+					$this->best_user_lang_ac = 1;
+			}
 		}
 	}
 
