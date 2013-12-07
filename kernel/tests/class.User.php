@@ -92,6 +92,16 @@ class UserTest
 		if (!assertFalse($user->update())) return;
 	}
 
+	function recover_password()
+	{
+		$user = new User();
+		if (!assertFalse($user->login("rafaelclp", "rafael"))) return;
+		if (!assertTrue($user->login("rafaelclp", "rafolete"))) return;
+		$new_password = $user->recover_password();
+		if (!assertFalse($user->login("rafaelclp", "rafolete"))) return;
+		if (!assertTrue($user->login("rafaelclp", $new_password))) return;
+	}
+
 	function remove()
 	{
 		$user = new User();
@@ -102,11 +112,6 @@ class UserTest
 		$user = new User();
 		if (!assertTrue($user->remove("rafaelclp"))) return;
 		if (!assertFalse($user->remove("rafaelclp"))) return;
-	}
-
-	function recover_password()
-	{
-		
 	}
 };
 
