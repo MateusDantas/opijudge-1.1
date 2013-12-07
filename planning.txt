@@ -106,3 +106,16 @@ File
 	// $file = new File("code_path/<submission_id>." . File::get_extension($_FILES["<name>"]["name"]));
 	// $file->move_from($_FILES["<name>"]["tmp_name"]);
 	// ou criar um método estático que já faz isso, passando o id da submissao e o $_FILES["<name>"].
+	
+	
+//////////////////////////////////////
+JUDGE ITSELF
+
+FOLDERS:
+/var/codes-opijudge           		 // Pasta onde o codigo dos usuarios vão ficar armazenados
+	-> /var/codes-opijudge/id/       // Pasta especifica de cada submissão
+/var/problems-opijudge               // Pasta onde todos os problemas vão ficar armazenados
+	-> /var/problems-opijudge/id/	 // Pasta especifica para cada problema
+/var/judge-opijudge					 // Pasta onde vão ficar armazenados os arquivos do judge
+
+/var/judge-opijudge/README.md		 // Readme contendo instruções de como instalar o OPI Judge
