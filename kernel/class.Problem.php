@@ -40,6 +40,13 @@ class Problem
 			$this->data[$name] = $value;
 	}
 
+	public function __invoke($data)
+	{
+		foreach ($data as $key => $value)
+			if (key_exists($key, self::$mysql_columns))
+				$this->data[$key] = $value;
+	}
+
 	/**
 	 * Copies useful data from $data to $this->data.
 	 */
@@ -48,7 +55,20 @@ class Problem
 		$this->data = $data;
 		MySQL::clear_data($this->data, self::$mysql_columns, false);
 	}
-	
+
+	/**
+	 * Checks if a problem name is valid.
+	 *
+	 * @param $name Problem name to be checked.
+	 * @return TRUE if it is valid, or FALSE, otherwise.
+	 */
+	private function is_name_valid($name)
+	{
+		if (!between($name, PROBLEM_NAME_MIN_LENGTH, PROBLEM_NAME_MAX_LENGTH))
+			return false;
+		return true;
+	}
+
 	/**
 	 * Adds the object problem
 	 * @return ADD_PROBLEM_SUCCESS if successfull or the error message

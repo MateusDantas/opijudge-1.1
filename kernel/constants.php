@@ -12,8 +12,10 @@ define("RANDOM_STRING_CHARSET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU
 define("IMPLEMENTATION_ERROR", -8);
 define("MYSQL_SERVER_ERROR", -9);
 
-
 // Problems
+define("PROBLEM_NAME_MIN_LENGTH", 4);
+define("PROBLEM_NAME_MAX_LENGTH", 48);
+
 define("BY_POINTS_PROBLEM_TYPE",1);
 define("FULL_SCORE_PROBLEM_TYPE",2);
 define("ADD_PROBLEM_SUCCESS",3);
