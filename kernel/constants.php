@@ -11,8 +11,8 @@ define("IMPLEMENTATION_ERROR", -8);
 define("MYSQL_SERVER_ERROR", -9);
 
 // User configurations
-define("MIN_USER_LENGTH", 4);
-define("MAX_USER_LENGTH", 16);
+define("USER_MIN_LENGTH", 4);
+define("USER_MAX_LENGTH", 16);
 define("USER_REQUIRED_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 define("USER_OPTIONAL_ALPHABET", "0123456789_.");
 
