@@ -26,7 +26,7 @@ submission
 	time//_ms
 	memory//_kb
 	best_user_lang_ac
-	visibility=shown (shown, hidden, disqualify)
+	date
 
 Classes
 --------------------------------------------------------

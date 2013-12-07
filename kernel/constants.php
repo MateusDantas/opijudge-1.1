@@ -2,6 +2,8 @@
 
 // MySQL columns
 define("USER_COLUMNS", "id|username|password|salt|email|access_level");
+define("PROBLEM_COLUMNS", "id|user_id|name|type");
+define("SUBMISSION_COLUMNS", "id|problem_id|user_id|language|status|points|time|memory|best_user_lang_ac|date");
 
 // Strings
 define("RANDOM_STRING_CHARSET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
