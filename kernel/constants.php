@@ -39,6 +39,6 @@ define("ERROR_GENERATING_PASSWORD","");
 define("TYPE_EMAIL", 1);
 define("TYPE_USERNAME", 2);
 define("TYPE_ID", 3);
-define("TYPE_INVALID", 0);
+define("INVALID_TYPE", 0);
 
 ?>
