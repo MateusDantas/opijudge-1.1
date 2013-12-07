@@ -77,6 +77,13 @@ class Submission
 		$this->update_user_best_ac();
 		return ADD_SUBMISSION_SUCCESS;
 	}
+	
+	public function submit()
+	{
+		$client = stream_socket_client(JUDGE_HOST_CONFIG,$errno,$errorMessage);
+		fwrite($client,JUDGE_SUBMISSION . ((int)$this->id));
+		fclose($client);
+	}
 
 	public function get($id)
 	{
