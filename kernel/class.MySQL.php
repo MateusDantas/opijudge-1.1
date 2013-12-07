@@ -204,8 +204,8 @@ class MySQL
 		if ($clauses === null)
 		{
 			$clauses = "";
-			if (key_exists("id", $data) && is_numeric($data["id"]))
-				$clauses = "WHERE `id`=" . $data["id"] . " LIMIT 1";
+			if (key_exists("id", $data))
+				$clauses = "WHERE `id`=" . ((int)$data["id"]) . " LIMIT 1";
 		}
 
 		$update = "";
