@@ -184,8 +184,17 @@ class User
 				$this->hash_password(true);
 			}
 		}
+		else if ($name == "all")
+			$this->copy_data_from_array($value);
 		else if (is_string($name) && key_exists($name, self::$mysql_columns))
 			$this->data[$name] = $value;
+	}
+
+	public function __invoke($data)
+	{
+		foreach ($data as $key => $value)
+			if (key_exists($key, self::$mysql_columns))
+				$this->data[$key] = $value;
 	}
 
 	/**
@@ -196,18 +205,18 @@ class User
 	 */
 	public function register()
 	{
-		//if (!$this->is_password_valid($this->data["password"])) return INVALID_PASSWORD;
 		if ($this->password === null) return INVALID_PASSWORD;
-		if (!$this->is_username_valid($this->data["username"])) return INVALID_USER;
-		if (!$this->is_email_valid($this->data["email"])) return INVALID_EMAIL;
+		if (!$this->is_username_valid($this->username)) return INVALID_USER;
+		if (!$this->is_email_valid($this->email)) return INVALID_EMAIL;
 
 		$this->hash_password();
 
 		// TODO[if required]: merge exists(username, email) in one query only
-		if ($this->exists($this->data["username"])) return USER_ALREADY_EXISTS;
-		if ($this->exists($this->data["email"])) return EMAIL_ALREADY_EXISTS;
+		if ($this->exists($this->username)) return USER_ALREADY_EXISTS;
+		if ($this->exists($this->email)) return EMAIL_ALREADY_EXISTS;
 		if (!MySQL::insert("user", $this->data)) return MYSQL_SERVER_ERROR;
 
+		$this->id = MySQL::insert_id();
 		return REGISTER_SUCCESS;
 	}
 
@@ -250,10 +259,9 @@ class User
 	 */
 	public function update()
 	{
-		if (!$this->is_username_valid($this->data["username"])) return false;
-		//if (!$this->is_password_valid($this->data["password"])) return false;
-		if ($this->data["password"] === null) return false;
-		if (!$this->is_email_valid($this->data["email"])) return false;
+		if (!$this->is_username_valid($this->username)) return false;
+		if ($this->password === null) return false;
+		if (!$this->is_email_valid($this->email)) return false;
 
 		return MySQL::update("user", $this->data) !== false;
 	}
@@ -276,8 +284,7 @@ class User
 	public function recover_password()
 	{
 		$new_password = $this->get_random_password();
-		$this->data["password"] = $new_password;
-		$this->hash_password(true);
+		$this->password = $new_password;
 		if (!$this->update()) return ERROR_GENERATING_PASSWORD;
 
 		return $new_password;
