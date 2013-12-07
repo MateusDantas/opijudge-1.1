@@ -56,10 +56,10 @@ class Problem
 	 */
 	public function add()
 	{
-		if (!$this->is_name_valid($this->data["name"])) {
+		if (!$this->is_name_valid($this->name)) {
 			return INVALID_PROBLEM_NAME;
 		}
-		if (!MySQL::insert("problem",$this->data)) {
+		if (!MySQL::insert("problem", $this->data)) {
 			return MYSQL_SERVER_ERROR;
 		}
 		return ADD_PROBLEM_SUCCESS;
@@ -81,7 +81,7 @@ class Problem
 	 */
 	public function update()
 	{
-		$now_id = $this->data["id"];
+		$now_id = (int)$this->id;
 		if (!MySQL::update("problem", $this->data,"WHERE id=$now_id"))
 			return FALSE;
 			
@@ -94,7 +94,7 @@ class Problem
 	 */
 	public function remove($id)
 	{
-		if (!MySQL::delete("problem","WHERE id=$id"))
+		if (!MySQL::delete("problem","WHERE id=" . ((int)$id)))
 			return FALSE;
 			
 		return TRUE;
