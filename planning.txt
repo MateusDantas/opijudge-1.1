@@ -1,0 +1,107 @@
+REMOVE IT AFTER EVERYTHING IS DONE
+
+
+MYSQL
+--------------------------------------------------------
+user
+	id
+	username (pelo menos uma letra)
+	password
+	salt
+	email
+	access_level
+
+problem
+	id
+	name
+	type
+
+submission
+	id
+	problem_id
+	user_id
+	language
+	status
+	points
+	time//_ms
+	memory//_kb
+	is_best_user_ac_for_this_language
+	visibility=shown (shown, hidden, disqualify)
+
+Classes
+--------------------------------------------------------
+Nas classes abaixo, use:
+$a = new NomeDaClasse(id);
+$a->campo_mysql = valor; // pra alterar algo (tipo $a->email = "foda-se"; pra alterar email)
+$x = $a->campo_mysql; // pra ler algo
+$a.update(); // pra salvar alteraçoes
+
+User
+	private var array data;
+	private string get_where_clause(mixed username_or_email_or_id);
+
+	protected bool exists(mixed username_or_email_or_id);
+	protected bool is_password_valid(string password)
+	protected bool is_username_valid(string username)
+	protected bool is_email_valid(string email)
+	protected string get_random_salt()
+	protected string get_random_password()
+	protected string get_hashed_password()
+	protected void hash_password()
+
+	public int register();
+	public bool login(string username_or_email, string password);
+	public bool get(mixed username_or_id);
+	public bool update();
+	public bool remove(mixed username_or_email_or_id);
+	public string recover_password(); // generates a new password and returns the new password
+
+	public array<Problem> get_problems(page=0, limit=0);
+	public array<Submission> get_submissions(get_problem_data=true, page=0, limit=0);
+
+Problem
+	private var array data;
+
+	public Problem(string name, int type=PROBLEM_BY_POINTS);
+	public Problem();
+
+	public bool get(int id);
+	public bool add();
+	public bool update();
+	public bool remove(int id);
+
+Submission
+	private var array data;
+
+	public Submission(int problem_id, int user_id, int language, string status, int points);
+	public Submission();
+
+	public bool get(int id);
+	public bool add();
+	public bool update();
+	public bool remove(int id);
+
+File
+	//private var FILE $resource; // resource do arquivo aberto com fopen --- ignorar!!, toda vez que formos escrever/ler/outra coisa, criamos um resource
+	private var string $path = null; // path
+	private var string $file_name = null; // nome do arquivo aberto
+
+	public File($file_name); // igual o load
+	public string get_path();
+	public string get_file_name();
+	public string get_extension();
+	public void load($file_name); // apenas altera o path e file_name (ou seja, aqui tem que parsear o $file_name pro $path e $file_name)
+	public bool write($file_content); // escreve o file content, e retorna TRUE/FALSE se conseguiu ou não
+	public string read(); // le o arquivo e retorna o conteudo, ou null (ou constante de erro) se não conseguir
+	public bool move_from($file_name); // move de $file_name para $this->path/$this->file_name.
+	public bool move_to($file_name); // o oposto do move_from
+
+	// Métodos estáticos
+	static public string get_path($file_name); // extrai o path
+	static public string get_file_name($file_name); // extrai o file name
+	static public string get_extension($file_name); // extrai a extensao do arquivo
+
+	// note que quando um usuário cria um arquivo, recebemos um array $_FILES["<name>"][<chave>] com os dados do arquivo ("name", "tmp_name" etc). Fazer:
+	// $file = new File("code_path/<submission_id>." . File::get_extension($_FILES["<name>"]["name"]));
+	// $file->move_from($_FILES["<name>"]["tmp_name"]);
+	// ou criar um método estático que já faz isso, passando o id da submissao e o $_FILES["<name>"].
