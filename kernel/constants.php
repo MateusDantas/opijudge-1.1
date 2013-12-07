@@ -38,6 +38,7 @@ define("FULL_SCORE_PROBLEM_TYPE",2);
 define("ADD_PROBLEM_SUCCESS",3);
 define("INVALID_PROBLEM_NAME",4);
 define("NO_LIMIT_PROBLEM",5);
+define("UPDATE_PROBLEM_SUCCESS",3);
 //
 
 // User configurations
@@ -74,6 +75,7 @@ define("INVALID_TYPE", 0);
 
 
 // Language constants
+define("LANG_ANY", 0);
 define("LANG_CPP", 1);
 define("LANG_C", 2);
 define("LANG_PYTHON", 3);
